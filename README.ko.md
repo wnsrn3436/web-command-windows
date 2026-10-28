@@ -1,5 +1,7 @@
 # Command Windows
 
+[English](README.md)
+
 Windows 명령 프롬프트처럼 꾸민 ASP 홈페이지다. 검은 화면의 입력줄에 `help`, `clear`, `open [제목]` 같은 명령을 치면 서버가 처리해 결과를 바로 아래에 이어 붙이고, `open` 은 프로그램 소개 글을 터미널 화면 안에 띄운다. 왼쪽 메뉴의 그림을 누르면 그 글을 여는 명령이 입력줄에 채워진다. 학교 과제로 만들었다.
 
 <p>
@@ -24,14 +26,14 @@ ASP 를 실행할 수 있는 IIS 에 올려서 연다. Releases에서 받은 압
 | `open <제목>` | 글을 연다. 제목은 `3DP 칩`, `반디집`, `꿀뷰`, `알송`, `팟플레이어` |
 | `<명령> & clear` | 화면을 지운 뒤 명령을 실행한다 |
 
-그 밖의 입력에는 명령이 아니라는 메시지가 붙는다. 왼쪽 메뉴의 HOME 을 누르면 `help & clear` 가, 프로그램 그림을 누르면 `open <제목> & clear` 가 입력줄에 들어가고 Enter 를 치면 실행된다.
+그 밖의 입력에는 명령이 아니라는 메시지가 나온다. 왼쪽 메뉴의 HOME 을 누르면 `help & clear` 가, 프로그램 그림을 누르면 `open <제목> & clear` 가 입력줄에 들어가고 Enter 를 치면 실행된다.
 
 
 ## 구현 원리
 
-**화면 기록은 세션에 쌓는다.** 입력줄은 `bottom_main.asp` 자신에게 POST 하는 폼이고, ASP 는 명령을 처리한 뒤 프롬프트와 명령, 결과 상자를 HTML 로 만들어 `Session("log")` 뒤에 붙인다. 페이지는 매번 이 기록 전체를 다시 그리고 맨 아래에 새 입력줄을 놓으므로, 페이지가 새로 불려도 이전 명령과 결과가 위에 남아 터미널처럼 보인다. `clear` 는 이 세션 값을 비우고, 명령 끝의 ` & clear` 는 떼어 낸 뒤 기록을 비우고 남은 명령을 처리한다.
+**화면 기록은 세션에 쌓는다.** 입력줄은 `bottom_main.asp` 자신에게 POST 하는 폼이고, ASP 는 명령을 처리한 뒤 프롬프트와 명령, 결과 상자를 HTML 로 만들어 `Session("log")` 뒤에 붙인다. 페이지는 매번 이 기록 전체를 다시 그리고 맨 아래에 새 입력줄을 놓으므로 페이지가 새로 불려도 이전 명령과 결과가 위에 남아 터미널처럼 보인다. `clear` 는 이 세션 값을 비우고 명령 끝의 ` & clear` 는 떼어 낸 뒤 기록을 비우고 남은 명령을 처리한다.
 
-**글은 파일에서 읽어 끼워 넣는다.** 글마다 `bottom_<이름>.html` 이라는 HTML 조각 파일이 있고, `open` 명령이 들어오면 `ADODB.Stream` 으로 그 파일을 UTF-8 로 읽어 결과 상자 안에 그대로 넣는다.
+**글은 파일에서 읽어 끼워 넣는다.** 글마다 `bottom_<이름>.html` 이라는 HTML 조각 파일이 있고 `open` 명령이 들어오면 `ADODB.Stream` 으로 그 파일을 UTF-8 로 읽어 결과 상자에 그대로 담는다.
 
 ```asp
 Set stream = Server.CreateObject("ADODB.Stream")
@@ -45,7 +47,7 @@ With Stream
 End With
 ```
 
-**화면은 프레임으로 나눈다.** `index.html` 의 frameset 이 위쪽 제목줄(`top_main.html`), 왼쪽 메뉴(`left_main.html`), 오른쪽 터미널(`bottom_main.asp`), 아래쪽 테두리(`bottom_draw.html`) 를 나눈다. 왼쪽 메뉴의 그림은 `target="bottom"` 인 폼이라 명령을 터미널 프레임으로 보낸다. 스크롤바는 nanoScrollerJS 로 바꿨고, 글 안의 링크에는 마우스를 올리면 색이 바뀌는 Rainbow Links 를 붙였다.
+**화면은 프레임으로 나눈다.** `index.html` 의 frameset 이 위쪽 제목줄(`top_main.html`), 왼쪽 메뉴(`left_main.html`), 오른쪽 터미널(`bottom_main.asp`), 아래쪽 테두리(`bottom_draw.html`) 로 화면을 가른다. 왼쪽 메뉴의 그림은 `target="bottom"` 인 폼이라 명령을 터미널 프레임으로 보낸다. 스크롤바는 nanoScrollerJS 로 바꿨고, 글 안의 링크에는 마우스를 올리면 색이 바뀌는 Rainbow Links 를 달았다.
 
 
 ## 파일
@@ -68,8 +70,8 @@ End With
 
 ## 크레딧
 
-- `scrollbar_jquery.min.js` 는 jQuery Foundation 의 jQuery 1.10.2 다. MIT 라이선스다.
-- `scrollbar.js` 와 `scrollbar.css` 는 James Florentino 의 nanoScrollerJS 0.8.0 이다. MIT 라이선스다.
+- `scrollbar_jquery.min.js` 는 jQuery Foundation 의 jQuery 1.10.2 이고 MIT 라이선스다.
+- `scrollbar.js` 와 `scrollbar.css` 는 James Florentino 의 nanoScrollerJS 0.8.0 이고 MIT 라이선스다.
 - `rainbow.js` 는 TAKANASHI Mizuki 의 Rainbow Links 1.03 이다.
 - `image/` 의 프로그램 배너와 아이콘은 각 프로그램을 만든 회사의 것이다.
 
